@@ -1,0 +1,64 @@
+main: io.github.aleksandarharalanov.crates.Crates
+version: 0.1.0b
+name: Crates
+author: Beezle
+website: github.com/AleksandarHaralanov/Crates
+description: Implements crate unboxing for various rewards.
+softdepend: [WorldGuard]
+
+commands:
+  crates:
+    description: Main Crates command.
+    usage: /<command>
+    aliases: [crate, crs]
+
+permissions:
+  crates.*:
+    description: Grants every permission for Crates.
+    default: op
+    children:
+      crates.use: true
+      crates.open: true
+      crates.config: true
+      crates.keys.*: true
+
+  # Base command access
+  crates.use:
+    description: View basic Crates help/about.
+    default: true
+
+  # Opening crates
+  crates.open:
+    description: Be able to open crates.
+    default: true
+
+  # Config/reload
+  crates.config:
+    description: Reload of config and change crate open delay.
+    default: op
+
+  # Keys management/view
+  crates.keys.*:
+    description: All key-related permissions.
+    default: op
+    children:
+      crates.keys.view: true
+      crates.keys.view.other: true
+      crates.keys.set: true
+      crates.keys.giveall: true
+
+  crates.keys.view:
+    description: View your own key count.
+    default: true
+
+  crates.keys.view.other:
+    description: View another player's key count.
+    default: op
+
+  crates.keys.set:
+    description: Set a player's keys.
+    default: op
+
+  crates.keys.giveall:
+    description: Give keys to all online players.
+    default: op
