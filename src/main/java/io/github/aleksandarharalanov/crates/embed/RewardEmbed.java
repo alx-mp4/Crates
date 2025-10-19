@@ -24,7 +24,7 @@ public final class RewardEmbed extends DiscordEmbed {
 
         embed.setTitle("Unboxed Crate")
                 .setThumbnail(icon)
-                .addField("Reward:", String.format("%s× %s", reward.amount, reward.material), false)
+                .addField("Reward:", String.format("%s× %s", reward.amount, reward.material), true)
                 .addField("Rarity:", reward.tier.toString(), true)
                 .setColor(Color.decode(reward.tier.getRgbColor()));
     }
