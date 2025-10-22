@@ -12,6 +12,7 @@ public final class HelpCommand {
                 "&5» Crates commands:",
                 "&7/crates &f- Displays this content.",
                 "&7/crates about &f- About Crates.",
+                "&7/crates preview &f- View crate rewards.",
                 "&7/crates keys &f- Check how many keys you have.",
                 "&7/crates keys <player> &f- Check another player's keys.",
                 "&7/crates giveall [amount] &f- Give keys to all online players.",

@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 
 public class Crates extends JavaPlugin {
@@ -84,7 +85,11 @@ public class Crates extends JavaPlugin {
 
         try {
             if (sqliteDb != null) sqliteDb.close();
-        } catch (Exception ignored) {}
+        } catch (SQLException e) {
+            LogUtil.logConsoleSevere(String.format(
+                    "[%s] An exception occurred whe closing SQLite database connection: %s", getDescription().getName(), e));
+        }
+
         if (io != null) io.shutdown();
 
         LogUtil.logConsoleInfo(String.format("[%s] v%s Disabled.",

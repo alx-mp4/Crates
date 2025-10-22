@@ -15,6 +15,7 @@ public final class CratesCommand implements CommandExecutor {
 
     public CratesCommand(Crates plugin) {
         subcommands.put("about", new AboutCommand(plugin));
+        subcommands.put("preview", new PreviewCommand(plugin));
         subcommands.put("keys", new KeysCommand());
         subcommands.put("giveall", new GiveAllKeysCommand());
         subcommands.put("setkeys", new SetKeysCommand());
