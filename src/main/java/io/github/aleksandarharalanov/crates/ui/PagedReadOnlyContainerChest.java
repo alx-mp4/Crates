@@ -71,7 +71,8 @@ public final class PagedReadOnlyContainerChest extends ContainerChest {
         switch (slot) {
             case SLOT_PREV:
                 if (page > 0) {
-                    page--; render();
+                    page--;
+                    render();
                     viewer.updateInventory(this);
                 }
                 return null;
