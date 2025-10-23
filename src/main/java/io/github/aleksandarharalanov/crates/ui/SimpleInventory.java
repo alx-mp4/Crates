@@ -27,7 +27,10 @@ public final class SimpleInventory implements IInventory {
         if (i < 0 || i >= contents.length) return null;
         ItemStack s = contents[i];
         if (s == null) return null;
-        if (s.count <= amount) { contents[i] = null; return s; }
+        if (s.count <= amount) {
+            contents[i] = null;
+            return s;
+        }
         ItemStack part = new ItemStack(s.id, amount, s.getData());
         s.count -= amount;
         if (s.count <= 0) contents[i] = null;
