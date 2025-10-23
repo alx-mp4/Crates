@@ -14,7 +14,6 @@ import io.github.aleksandarharalanov.crates.util.misc.EffectUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -39,7 +38,7 @@ public final class RewardManager {
         LogUtil.logConsoleInfo(String.format("[Crates] Loaded %d rewards from config.yml", rewards.size()));
     }
 
-    public static void giveReward(Player player, Block block) {
+    public static void giveReward(Player player, Block crate) {
         if (rewards.isEmpty()) loadRewards();
         if (rewards.isEmpty()) {
             player.sendMessage(ColorUtil.translateColorCodes("&7» No rewards are configured."));
@@ -47,10 +46,15 @@ public final class RewardManager {
         }
 
         Reward reward = getRandomReward();
-        ItemStack drop = new ItemStack(reward.material, reward.amount, (short) 0, reward.data);
-        block.setType(Material.AIR);
-        EffectUtil.playBlockBreakEffect(player, block.getLocation(), 35, reward.tier.getParticleColor());
-        block.getWorld().dropItem(block.getLocation(), drop);
+
+        // --- Dev API start
+        CrateRewardEvent event = new CrateRewardEvent(crate, player, reward);
+        getServer().getPluginManager().callEvent(event);
+        // --- Dev API end
+
+        crate.setType(Material.AIR);
+        EffectUtil.playBlockBreakEffect(player, crate.getLocation(), 35, reward.tier.getParticleColor());
+        crate.getWorld().dropItem(crate.getLocation(), reward.itemStack);
 
         player.sendMessage(ColorUtil.translateColorCodes(String.format(
                 "&7» The crate contained &f%d× %s &8[%s&8]&7!", reward.amount, reward.material.name(), reward.tier.getDisplayName())));
@@ -68,7 +72,8 @@ public final class RewardManager {
                     try {
                         webhook.execute();
                     } catch (IOException e) {
-                        LogUtil.logConsoleWarning(e.getMessage());
+                        LogUtil.logConsoleWarning(String.format(
+                                "[Crates] An exception occurred when executing a webhook: %s", e));
                     }
                 },
                 20L
@@ -79,7 +84,6 @@ public final class RewardManager {
         int total = 0;
         for (Reward r : rewards) total += r.weight;
         if (total <= 0) return rewards.get(0);
-
         int roll = random.nextInt(total);
         int cumulative = 0;
         for (Reward r : rewards) {
