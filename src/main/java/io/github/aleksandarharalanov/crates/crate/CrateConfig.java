@@ -1,6 +1,7 @@
 package io.github.aleksandarharalanov.crates.crate;
 
 import io.github.aleksandarharalanov.crates.Crates;
+import io.github.aleksandarharalanov.crates.crate.reward.RewardTier;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 import org.bukkit.Material;
 import org.bukkit.util.config.Configuration;

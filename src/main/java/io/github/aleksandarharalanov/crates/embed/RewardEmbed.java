@@ -1,6 +1,6 @@
 package io.github.aleksandarharalanov.crates.embed;
 
-import io.github.aleksandarharalanov.crates.crate.Reward;
+import io.github.aleksandarharalanov.crates.crate.reward.Reward;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

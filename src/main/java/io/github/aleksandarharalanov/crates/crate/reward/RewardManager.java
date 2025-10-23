@@ -1,4 +1,4 @@
-package io.github.aleksandarharalanov.crates.crate;
+package io.github.aleksandarharalanov.crates.crate.reward;
 
 import io.github.aleksandarharalanov.crates.Crates;
 import io.github.aleksandarharalanov.crates.crate.CrateConfig.RewardEntry;

@@ -1,4 +1,4 @@
-package io.github.aleksandarharalanov.crates.crate;
+package io.github.aleksandarharalanov.crates.crate.reward;
 
 public enum RewardTier {
 
