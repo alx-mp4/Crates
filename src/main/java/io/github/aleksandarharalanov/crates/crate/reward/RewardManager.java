@@ -1,6 +1,8 @@
 package io.github.aleksandarharalanov.crates.crate.reward;
 
 import io.github.aleksandarharalanov.crates.Crates;
+import io.github.aleksandarharalanov.crates.api.event.CrateRewardEvent;
+import io.github.aleksandarharalanov.crates.crate.CrateConfig;
 import io.github.aleksandarharalanov.crates.crate.CrateConfig.RewardEntry;
 import io.github.aleksandarharalanov.crates.embed.DiscordConfig;
 import io.github.aleksandarharalanov.crates.embed.DiscordEmbed;
