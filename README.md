@@ -12,7 +12,6 @@ Configurable weighted rewards, rarity tiers, and Discord integration.
 ## 🧭 Features
 
 ### Core Crates
-Configurable weighted rewards and rarity tiers:
 - Players open crates by spending virtual keys
 - Weighted reward rolls using integer weights
 - Cosmetic rarity tiers: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`
