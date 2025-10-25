@@ -3,14 +3,16 @@
 ## ✨ Features
 ### Core Crates
 Configurable weighted rewards and rarity tiers
-- 🔑 Players open crates by spending keys
+- 🔑 Players open crates by spending virtual keys
 - 🎯 Weighted reward rolls with simple integer weights
-- 🌈 Cosmetic rarity tiers: COMMON, UNCOMMON, RARE, EPIC, LEGENDARY
+- 🌈 Cosmetic rarity tiers: COMMON, UNCOMMON, RARE, EPIC, and LEGENDARY
 - ⏱️ Adjustable open delay (in ticks) for anticipation
+- 🎞️ Adjustable toggle option for the roulette-like spin animation during opening
 
 ### Player Experience
-- 🧾 Read-only, paged **preview menu** to inspect possible rewards
-- 🔔 Audio cues when opening crates and receiving keys
+- 🧾 Paged **preview menu** to inspect all configured rewards and their amoutns
+- ✨ Effects when opening crates
+- 🔔 Audio cues when opening crates, receiving keys, and the preview menu
 
 ### Administration
 - 🧰 Clear command suite for keys and config
@@ -18,7 +20,8 @@ Configurable weighted rewards and rarity tiers
 - 🔁 Live reload of configuration
 
 ### Logging & Integrations
-- 📱 Discord webhook integration with customizable avatar (Minotar)
+- 📱 Discord webhook integration with customizable avatar
+- 💬 In-game message congratulating you on your award; if it's EPIC or LEGENDARY, everyone will see it
 
 ---
 ## 🤝 Contributions, Suggestions, and Issues
@@ -48,30 +51,32 @@ By default, only OPs have permission.
 Use **PermissionsEx** or similar plugins to grant groups the permission, enabling the commands.
 
 ### Commands:
-| Command | Permission | Description |
-|---------|------------|-------------|
-| `/crates` | `crates.use` | View Crates commands. |
-| `/crates reload` | `crates.config` | Reload Crates configuration. |
-| `/crates delay <ticks>` | `crates.config` | Set crate open delay (20 ticks = 1s). |
-| `/crates keys` | `crates.keys.view` | View your key count. |
-| `/crates keys <player>` | `crates.keys.view.other` | View another player's key count. |
-| `/crates keys set <player> <amount>` | `crates.keys.set` | Set a player's keys. |
-| `/crates keys giveall <amount>` | `crates.keys.giveall` | Give keys to all online players. |
+| Command                              | Permission               | Description                                    |
+|--------------------------------------|--------------------------|------------------------------------------------|
+| `/crates`                            | `crates.use`             | Displays Crates help/about menu.               |
+| `/crates reload`                     | `crates.config`          | Reloads the Crates configuration.              |
+| `/crates delay <ticks>`              | `crates.config`          | Sets crate open delay *(20 ticks = 1 second)*. |
+| `/crates keys`                       | `crates.keys.view`       | Shows your current crate key count.            |
+| `/crates keys <player>`              | `crates.keys.view.other` | View another player’s crate key count.         |
+| `/crates keys set <player> <amount>` | `crates.keys.set`        | Set a specific player’s key amount.            |
+| `/crates keys giveall <amount>`      | `crates.keys.giveall`    | Give keys to all online players.               |
+
 
 **Aliases:** `/crate`, `/crs`
 
 ### Permissions:
-| Permission | Description |
-|------------|-------------|
-| `crates.*` | Wildcard permission that grants all permissions. |
-| `crates.use` | Allows viewing basic Crates help/about. |
-| `crates.open` | Allows players to open crates. |
-| `crates.config` | Allows reloading and modifying Crates configuration (incl. delay). |
-| `crates.keys.*` | Wildcard for all key-related permissions. |
-| `crates.keys.view` | View your own key count. |
-| `crates.keys.view.other` | View another player's key count. |
-| `crates.keys.set` | Set a player's keys. |
-| `crates.keys.giveall` | Give keys to all online players. |
+| Permission               | Default | Description                                     |
+|--------------------------|---------|-------------------------------------------------|
+| `crates.*`               | `op`    | Grants all Crates permissions.                  |
+| `crates.use`             | `true`  | Allows viewing the main Crates help/about menu. |
+| `crates.open`            | `true`  | Allows opening crates.                          |
+| `crates.config`          | `op`    | Allows reloading config and setting open delay. |
+| `crates.keys.*`          | `op`    | Grants all key-related permissions.             |
+| `crates.keys.view`       | `true`  | Allows viewing your own key count.              |
+| `crates.keys.view.other` | `op`    | Allows viewing another player’s key count.      |
+| `crates.keys.set`        | `op`    | Allows setting a player’s key count.            |
+| `crates.keys.giveall`    | `op`    | Allows giving keys to all online players.       |
+
 
 ---
 ## ⚙️ Configurations
@@ -81,17 +86,23 @@ It defines the webhook options, crate open delay, and the reward table.
 
 #### Main Config `config.yml`:
 ```yaml
-# ===================================================================================
+# ========================================================================
 # Crates Configuration
-# ===================================================================================
-# crate-open-delay: (Measured in ticks; 20 ticks = 1 second — 1 tick = 50 ms)
+# ------------------------------------------------------------------------
+# crate-open-delay:  Delay before opening (20 ticks = 1 second)
+# roulette-animation:  Toggle roulette spin effect
 #
-# Each reward needs to have:
-#   id:     (String item ID, e.g., "35:3" for light blue wool)
-#   amount: (How much of the item is given)
-#   weight: (Relative chance — higher = more common)
-#   tier:   (Reward tier: COMMON, UNCOMMON, RARE, EPIC, LEGENDARY — purely cosmetic)
-# ===================================================================================
+# webhook:
+#   enabled:     Enable Discord webhook notifications
+#   url:         Webhook endpoint (replace with your URL)
+#   avatar-api:  Player avatar API (%player% = username placeholder)
+#
+# Each reward requires:
+#   id:      Item ID (e.g. "35:3" = light blue wool)
+#   amount:  Quantity of the item
+#   weight:  Chance weight (higher = more common)
+#   tier:    Cosmetic rarity (COMMON, UNCOMMON, RARE, EPIC, and LEGENDARY)
+# ========================================================================
 
 webhook:
   enabled: false
@@ -99,6 +110,7 @@ webhook:
   avatar-api: "https://minotar.net/avatar/%player%.png"
 
 crate-open-delay: 20
+roulette-animation: true
 
 rewards:
   - id: "1"
