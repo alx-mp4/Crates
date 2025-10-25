@@ -1,3 +1,21 @@
+# ========================================================================
+# Crates Configuration
+# ------------------------------------------------------------------------
+# crate-open-delay:  Delay before opening (20 ticks = 1 second)
+# roulette-animation:  Toggle roulette spin effect
+#
+# webhook:
+#   enabled:     Enable Discord webhook notifications
+#   url:         Webhook endpoint (replace with your URL)
+#   avatar-api:  Player avatar API (%player% = username placeholder)
+#
+# Each reward requires:
+#   id:      Item ID (e.g. "35:3" = light blue wool)
+#   amount:  Quantity of the item
+#   weight:  Chance weight (higher = more common)
+#   tier:    Cosmetic rarity (COMMON, UNCOMMON, RARE, EPIC, and LEGENDARY)
+# ========================================================================
+
 webhook:
   enabled: false
   url: "INSERT_WEBHOOK_URL"
