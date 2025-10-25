@@ -1,70 +1,82 @@
-# 🧰 Crates
+# 📦 Crates
+Lightweight crate unboxing system for Minecraft Beta 1.7.3  
+Configurable weighted rewards, rarity tiers, and Discord integration.
 
-## ✨ Features
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Build](https://img.shields.io/badge/status-stable-success)
+![Platform](https://img.shields.io/badge/minecraft-beta%201.7.3-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
+## 🧭 Features
+
 ### Core Crates
-Configurable weighted rewards and rarity tiers
-- 🔑 Players open crates by spending virtual keys
-- 🎯 Weighted reward rolls with simple integer weights
-- 🌈 Cosmetic rarity tiers: COMMON, UNCOMMON, RARE, EPIC, and LEGENDARY
-- ⏱️ Adjustable open delay (in ticks) for anticipation
-- 🎞️ Adjustable toggle option for the roulette-like spin animation during opening
+Configurable weighted rewards and rarity tiers:
+- Players open crates by spending virtual keys
+- Weighted reward rolls using integer weights
+- Cosmetic rarity tiers: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`
+- Adjustable crate open delay *(in ticks)*
+- Optional roulette-style spin animation
 
 ### Player Experience
-- 🧾 Paged **preview menu** to inspect all configured rewards and their amount
-- ✨ Effects when opening crates
-- 🔔 Audio cues when opening crates, receiving keys, and the preview menu
+- Paged **preview menu** to inspect configured rewards
+- Subtle particle and sound effects during opening
+- Audio cues for crate actions and key handling
 
 ### Administration
-- 🧰 Clear command suite for keys and config
-- 🧮 View / set player keys and **give to all online** for events
-- 🔁 Live reload of configuration
+- Command suite for managing keys and configuration
+- View, set, or distribute keys to all online players
+- Reload configuration without server restarts
 
 ### Logging & Integrations
-- 📱 Discord webhook integration with customizable avatar
-- 💬 In-game message congratulating you on your award; if it's EPIC or LEGENDARY, everyone will see it
+- Optional Discord webhook integration with customizable avatar source
+- In-game broadcasts for EPIC and LEGENDARY rewards
 
 ---
-## 🤝 Contributions, Suggestions, and Issues
-Consider helping **Crates** become even more versatile and robust.
 
-It is **highly recommended** to visit the [CONTRIBUTING](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) guide for details on how to get started and where to focus your efforts.
+## 🤝 Contributing
+Contributions, issues, and suggestions are welcome.  
+Refer to the [CONTRIBUTING guide](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) before submitting changes.
 
-For any issues with the plugin, or suggestions, please submit them [here](https://github.com/AleksandarHaralanov/Crates/issues).
+To report bugs or request features, use the [GitHub Issues page](https://github.com/AleksandarHaralanov/Crates/issues).
 
 ---
+
 ## ⬇️ Download
-Latest stable release of **Crates** can be found here on [GitHub](https://github.com/AleksandarHaralanov/Crates/releases/latest).<br/>
-
-The plugin is fully open-source and transparent.<br/>
-If you'd like additional peace of mind, you're welcome to scan the `.jar` file using [VirusTotal](https://www.virustotal.com/gui/home/upload).
+The latest release is available on the [Releases page](https://github.com/AleksandarHaralanov/Crates/releases/latest).  
+For extra assurance, you can verify the `.jar` file using [VirusTotal](https://www.virustotal.com/gui/home/upload).
 
 ---
-## 📋 Requirements
-Your server must be running one of the following software: [CB1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar), [Project Poseidon](https://github.com/retromcorg/Project-Poseidon) or [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit).
+
+## 🔗 Requirements
+Compatible with:
+- [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar)
+- [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
+- [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
 **Softdepend:** WorldGuard
 
 ---
-## 🚀 Usage
-By default, only OPs have permission.
 
-Use **PermissionsEx** or similar plugins to grant groups the permission, enabling the commands.
+## 🪄 Usage
+By default, only server operators have permission.  
+Use a permissions plugin such as **PermissionsEx** to grant access to specific groups.
 
-### Commands:
+### Commands
 | Command                              | Permission               | Description                                    |
 |--------------------------------------|--------------------------|------------------------------------------------|
 | `/crates`                            | `crates.use`             | Displays Crates help/about menu.               |
 | `/crates reload`                     | `crates.config`          | Reloads the Crates configuration.              |
-| `/crates delay <ticks>`              | `crates.config`          | Sets crate open delay *(20 ticks = 1 second)*. |
+| `/crates delay <ticks>`              | `crates.config`          | Sets crate open delay (20 ticks = 1 second).   |
 | `/crates keys`                       | `crates.keys.view`       | Shows your current crate key count.            |
-| `/crates keys <player>`              | `crates.keys.view.other` | View another player’s crate key count.         |
+| `/crates keys <player>`              | `crates.keys.view.other` | View another player's crate key count.         |
 | `/crates keys set <player> <amount>` | `crates.keys.set`        | Set a specific player’s key amount.            |
 | `/crates keys giveall <amount>`      | `crates.keys.giveall`    | Give keys to all online players.               |
 
-
 **Aliases:** `/crate`, `/crs`
 
-### Permissions:
+### Permissions
 | Permission               | Default | Description                                     |
 |--------------------------|---------|-------------------------------------------------|
 | `crates.*`               | `op`    | Grants all Crates permissions.                  |
@@ -77,32 +89,31 @@ Use **PermissionsEx** or similar plugins to grant groups the permission, enablin
 | `crates.keys.set`        | `op`    | Allows setting a player’s key count.            |
 | `crates.keys.giveall`    | `op`    | Allows giving keys to all online players.       |
 
-
 ---
-## ⚙️ Configurations
-Crates generates a configuration file using the default settings in the **Crates** directory.
 
-It defines the webhook options, crate open delay, and the reward table.
+## 📦 Configuration
+The plugin generates a configuration file in the **Crates** directory on first run.  
+It defines webhook settings, crate open behavior, and reward data.
 
-#### Main Config `config.yml`:
+### `config.yml`
 ```yaml
-# ========================================================================
+# ==========================================================
 # Crates Configuration
-# ------------------------------------------------------------------------
-# crate-open-delay:  Delay before opening (20 ticks = 1 second)
-# roulette-animation:  Toggle roulette spin effect
+# ----------------------------------------------------------
+# crate-open-delay:   Delay before opening (20 ticks = 1s)
+# roulette-animation: Toggle roulette spin effect
 #
 # webhook:
 #   enabled:     Enable Discord webhook notifications
 #   url:         Webhook endpoint (replace with your URL)
-#   avatar-api:  Player avatar API (%player% = username placeholder)
+#   avatar-api:  Player avatar URL (%player% = username)
 #
 # Each reward requires:
 #   id:      Item ID (e.g. "35:3" = light blue wool)
 #   amount:  Quantity of the item
 #   weight:  Chance weight (higher = more common)
-#   tier:    Cosmetic rarity (COMMON, UNCOMMON, RARE, EPIC, and LEGENDARY)
-# ========================================================================
+#   tier:    Cosmetic rarity (COMMON → LEGENDARY)
+# ==========================================================
 
 webhook:
   enabled: false
@@ -138,11 +149,12 @@ rewards:
     weight: 1
     tier: LEGENDARY
 ```
-<br/>
 
-> [!NOTE]  
-> **Weights & Rolls:** Each reward's `weight` is added to a total pool. A random draw selects a reward proportional to its weight.  
-> **Tiers are cosmetic:** `tier` only affects labeling in menus/embeds; it does not directly change probability unless you set weights accordingly.
+> [!NOTE]
+> **Weights:** Each reward's `weight` adds to the total pool; higher values increase selection likelihood.  
+> **Tiers:** Cosmetic only — probabilities depend solely on weights.
+
+---
 
 ## 📊 Project Statistics
-<img src="https://repobeats.axiom.co/api/embed/d9987e6e276d665f58b96d06c76debb6a26690b9.svg" alt="Statistics" />
+![Statistics](https://repobeats.axiom.co/api/embed/d9987e6e276d665f58b96d06c76debb6a26690b9.svg)
