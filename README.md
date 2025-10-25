@@ -16,10 +16,10 @@ Configurable weighted rewards and rarity tiers:
 - Weighted reward rolls using integer weights
 - Cosmetic rarity tiers: `COMMON`, `UNCOMMON`, `RARE`, `EPIC`, `LEGENDARY`
 - Adjustable crate open delay *(in ticks)*
-- Optional roulette-style spin animation
 
 ### Player Experience
 - Paged **preview menu** to inspect configured rewards
+- Optional roulette-style spin animation
 - Subtle particle and sound effects during opening
 - Audio cues for crate actions and key handling
 
@@ -29,8 +29,8 @@ Configurable weighted rewards and rarity tiers:
 - Reload configuration without server restarts
 
 ### Logging & Integrations
-- Optional Discord webhook integration with customizable avatar source
-- In-game broadcasts for EPIC and LEGENDARY rewards
+- Optional Discord webhook integration with detailed embeds
+- In-game server-wide broadcasts for EPIC and LEGENDARY opened rewards
 
 ---
 
