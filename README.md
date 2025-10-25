@@ -10,7 +10,7 @@ Configurable weighted rewards and rarity tiers
 - 🎞️ Adjustable toggle option for the roulette-like spin animation during opening
 
 ### Player Experience
-- 🧾 Paged **preview menu** to inspect all configured rewards and their amoutns
+- 🧾 Paged **preview menu** to inspect all configured rewards and their amount
 - ✨ Effects when opening crates
 - 🔔 Audio cues when opening crates, receiving keys, and the preview menu
 
