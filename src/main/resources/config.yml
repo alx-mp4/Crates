@@ -1,21 +1,10 @@
-# ===================================================================================
-# Crates Configuration
-# ===================================================================================
-# crate-open-delay: (Measured in ticks; 20 ticks = 1 second — 1 tick = 50 ms)
-#
-# Each reward needs to have:
-#   id:     (String item ID, e.g., "35:3" for light blue wool)
-#   amount: (How much of the item is given)
-#   weight: (Relative chance — higher = more common)
-#   tier:   (Reward tier: COMMON, UNCOMMON, RARE, EPIC, LEGENDARY — purely cosmetic)
-# ===================================================================================
-
 webhook:
   enabled: false
   url: "INSERT_WEBHOOK_URL"
   avatar-api: "https://minotar.net/avatar/%player%.png"
 
 crate-open-delay: 20
+roulette-animation: true
 
 rewards:
   - id: "1"

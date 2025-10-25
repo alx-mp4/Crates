@@ -1,5 +1,6 @@
 package io.github.aleksandarharalanov.crates.listener.player;
 
+import io.github.aleksandarharalanov.crates.crate.CrateConfig;
 import io.github.aleksandarharalanov.crates.crate.CrateHandler;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,13 +13,12 @@ public class PlayerInteractListener extends PlayerListener {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
-        if (block == null) {
-            return;
-        }
+        if (block == null) return;
 
+        Action action = event.getAction();
         Player player = event.getPlayer();
-        if (block.getTypeId() == 95 && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            CrateHandler.openCrate(player, block);
+        if (CrateConfig.isBlockCrate(block) && action == Action.RIGHT_CLICK_BLOCK) {
+            CrateHandler.crateStart(player, block);
         }
     }
 }

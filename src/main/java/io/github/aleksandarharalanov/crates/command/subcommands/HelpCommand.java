@@ -18,6 +18,7 @@ public final class HelpCommand {
                 "&7/crates giveall [amount] &f- Give keys to all online players.",
                 "&7/crates setkeys <player> <amount> &f- Set a player's keys.",
                 "&7/crates delay <ticks> &f- Set the crate open delay in ticks.",
+                "&7/crates roulette &f- Toggle crate roulette spin animation.",
                 "&7/crates reload &f- Reload Crates config.",
         };
 

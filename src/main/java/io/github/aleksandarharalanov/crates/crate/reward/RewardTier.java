@@ -10,24 +10,24 @@ public enum RewardTier {
 
     private final String displayName;
     private final byte particleColor;
-    private final String rgbColor;
+    private final String embedColor;
 
-    RewardTier(String displayName, byte particleColor, String rgbColor) {
+    RewardTier(String displayName, byte particleColor, String embedColor) {
         this.displayName = displayName;
         this.particleColor = particleColor;
-        this.rgbColor = rgbColor;
+        this.embedColor = embedColor;
     }
 
     public String getDisplayName() { return displayName; }
     public byte getParticleColor() { return particleColor; }
-    public String getRgbColor() { return rgbColor; }
+    public String getEmbedColor() { return embedColor; }
 
-    public static RewardTier fromString(String s) {
-        if (s == null) return COMMON;
+    public static RewardTier fromString(String string) {
+        if (string == null) return COMMON;
 
-        String k = s.trim().toUpperCase();
-        for (RewardTier t : values()) {
-            if (t.name().equals(k)) return t;
+        String key = string.trim().toUpperCase();
+        for (RewardTier tier : values()) {
+            if (tier.name().equals(key)) return tier;
         }
 
         return COMMON;

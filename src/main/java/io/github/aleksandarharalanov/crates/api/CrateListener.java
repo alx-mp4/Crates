@@ -1,25 +1,30 @@
 package io.github.aleksandarharalanov.crates.api;
 
-import io.github.aleksandarharalanov.crates.api.event.CrateOpenEvent;
-import io.github.aleksandarharalanov.crates.api.event.CrateRewardEvent;
+import io.github.aleksandarharalanov.crates.api.event.CrateOpenEndEvent;
+import io.github.aleksandarharalanov.crates.api.event.CrateOpenStartEvent;
+import io.github.aleksandarharalanov.crates.api.event.CrateRewardChosenEvent;
+import org.bukkit.event.CustomEventListener;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
-/**
- * <b>Base listener for Crates custom events.</b>
- *
- * <pre>{@code
- * PluginManager pm = plugin.getServer().getPluginManager();
- * pm.registerEvent(Event.Type.CUSTOM_EVENT,
- *     new CratesEventBridge(new YOUR_CRATES_LISTENER()),
- *     Event.Priority.CHANGE_ME,
- *     YOUR_PLUGIN_INSTANCE);
- * }</pre>
- */
-public class CrateListener implements Listener {
+public class CrateListener extends CustomEventListener implements Listener {
 
     public CrateListener() {}
 
-    public void onCrateOpen(CrateOpenEvent event) {}
+    public void onCrateOpenEnd(CrateOpenEndEvent event) {}
 
-    public void onCrateReward(CrateRewardEvent event) {}
+    public void onCrateOpenStart(CrateOpenStartEvent event) {}
+
+    public void onCrateRewardChosen(CrateRewardChosenEvent event) {}
+
+    @Override
+    public void onCustomEvent(Event event) {
+        if (event instanceof CrateOpenEndEvent) {
+            this.onCrateOpenEnd((CrateOpenEndEvent) event);
+        } else if (event instanceof CrateOpenStartEvent) {
+            this.onCrateOpenStart((CrateOpenStartEvent) event);
+        } else if (event instanceof CrateRewardChosenEvent) {
+            this.onCrateRewardChosen((CrateRewardChosenEvent) event);
+        }
+    }
 }

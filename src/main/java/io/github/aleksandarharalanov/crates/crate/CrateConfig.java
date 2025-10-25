@@ -1,9 +1,11 @@
 package io.github.aleksandarharalanov.crates.crate;
 
 import io.github.aleksandarharalanov.crates.Crates;
+import io.github.aleksandarharalanov.crates.crate.reward.Reward;
 import io.github.aleksandarharalanov.crates.crate.reward.RewardTier;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.util.config.Configuration;
 
 import java.util.ArrayList;
@@ -14,55 +16,43 @@ public final class CrateConfig {
 
     private CrateConfig() {}
 
-    public static final class RewardEntry {
-
-        public final Material material;
-        public final byte data;
-        public final int amount;
-        public final int weight;
-        public final RewardTier tier;
-
-        public RewardEntry(Material material, byte data, int amount, int weight, RewardTier tier) {
-            this.material = material;
-            this.data = data;
-            this.amount = amount;
-            this.weight = weight;
-            this.tier = tier;
-        }
-    }
-
-    public static int getCrateOpenDelay() {
-        return Crates.getConfig().getInt("crate-open-delay", 20);
-    }
+    public static int getCrateOpenDelay() { return Crates.getConfig().getInt("crate-open-delay", 20); }
 
     public static void setCrateOpenDelay(int value) {
         Crates.getConfig().setProperty("crate-open-delay", value);
         Crates.getConfig().save();
     }
 
-    public static List<RewardEntry> getRewards() {
-        Configuration cfg = Crates.getConfig();
-        List<Object> raw = cfg.getList("rewards");
+    public static boolean getRouletteAnimation() { return Crates.getConfig().getBoolean("roulette-animation", true); }
 
-        List<RewardEntry> out = new ArrayList<>();
+    public static void setRouletteAnimation(boolean bool) {
+        Crates.getConfig().setProperty("roulette-animation", bool);
+        Crates.getConfig().save();
+    }
+
+    public static List<Reward> getRewards() {
+        Configuration config = Crates.getConfig();
+        List<Object> raw = config.getList("rewards");
+
+        List<Reward> out = new ArrayList<>();
         if (raw == null) {
             LogUtil.logConsoleWarning("[Crates] No 'rewards' section found.");
             return out;
         }
 
         for (int i = 0; i < raw.size(); i++) {
-            Object o = raw.get(i);
-            if (!(o instanceof Map)) {
-                LogUtil.logConsoleWarning("[Crates] Reward [" + i + "]: not a map; skipped.");
+            Object object = raw.get(i);
+            if (!(object instanceof Map)) {
+                LogUtil.logConsoleWarning(String.format("[Crates] Reward [%d]: not a map; skipped.", i));
                 continue;
             }
 
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>) o;
+            Map<String, Object> map = (Map<String, Object>) object;
 
             Object specObj = map.get("id");
             if (specObj == null) {
-                LogUtil.logConsoleWarning("[Crates] Reward [" + i + "]: missing 'id' (e.g. \"35:5\"). Skipped.");
+                LogUtil.logConsoleWarning(String.format("[Crates] Reward [%d]: missing 'id'. Skipped.", i));
                 continue;
             }
             String spec = specObj.toString().trim();
@@ -72,23 +62,23 @@ public final class CrateConfig {
             try {
                 id = Integer.parseInt(idData[0].trim());
             } catch (NumberFormatException ignored) {
-                LogUtil.logConsoleWarning("[Crates] Reward [" + i + "]: invalid id '" + idData[0] + "'. Skipped.");
+                LogUtil.logConsoleWarning(String.format("[Crates] Reward [%d]: invalid id '%s'. Skipped.", i, idData[0]));
                 continue;
             }
 
-            int d;
+            int data;
             try {
-                d = Integer.parseInt(idData[1].trim());
+                data = Integer.parseInt(idData[1].trim());
             } catch (NumberFormatException ignored) {
-                d = 0;
+                data = 0;
             }
 
-            if (d < 0) d = 0;
-            else if (d > 127) d = 127;
+            if (data < 0) data = 0;
+            else if (data > 127) data = 127;
 
             Material mat = Material.getMaterial(id);
             if (mat == null) {
-                LogUtil.logConsoleWarning("[Crates] Reward [" + i + "]: unknown item ID " + id + ". Skipped.");
+                LogUtil.logConsoleWarning(String.format("[Crates] Reward [%d]: unknown item ID %d. Skipped.", i, id));
                 continue;
             }
 
@@ -101,19 +91,20 @@ public final class CrateConfig {
             String tierName = String.valueOf(map.get("tier"));
             RewardTier tier = RewardTier.fromString(tierName);
 
-            byte data = (byte) d;
-            out.add(new RewardEntry(mat, data, amount, weight, tier));
+            out.add(new Reward(mat, (byte) data, amount, weight, tier));
         }
         return out;
     }
 
-    private static int asInt(Object o) {
-        if (o instanceof Number) return ((Number) o).intValue();
+    private static int asInt(Object object) {
+        if (object instanceof Number) return ((Number) object).intValue();
 
         try {
-            return o == null ? 1 : Integer.parseInt(o.toString().trim());
+            return object == null ? 1 : Integer.parseInt(object.toString().trim());
         } catch (NumberFormatException ignored) {
             return 1;
         }
     }
+
+    public static boolean isBlockCrate(Block block) { return block.getTypeId() == 33 && block.getData() == (byte) 7; }
 }

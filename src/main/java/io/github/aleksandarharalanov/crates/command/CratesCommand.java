@@ -20,6 +20,7 @@ public final class CratesCommand implements CommandExecutor {
         subcommands.put("giveall", new GiveAllKeysCommand());
         subcommands.put("setkeys", new SetKeysCommand());
         subcommands.put("delay", new DelayCommand());
+        subcommands.put("roulette", new RouletteCommand());
         subcommands.put("reload", new ReloadCommand());
     }
 

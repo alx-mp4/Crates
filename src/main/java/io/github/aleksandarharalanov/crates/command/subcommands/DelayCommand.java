@@ -30,8 +30,7 @@ public final class DelayCommand implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage(ColorUtil.translateColorCodes(String.format(
-                "&7» Set crate open delay to &5%d ticks&7.", value)));
+        sender.sendMessage(ColorUtil.translateColorCodes(String.format("&7» Set crate open delay to &5%d ticks&7.", value)));
         CrateConfig.setCrateOpenDelay(value);
         return true;
     }

@@ -1,16 +1,19 @@
 package io.github.aleksandarharalanov.crates;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import io.github.aleksandarharalanov.crates.block.CustomLockedChest;
 import io.github.aleksandarharalanov.crates.command.CratesCommand;
 import io.github.aleksandarharalanov.crates.listener.block.BlockBreakListener;
 import io.github.aleksandarharalanov.crates.listener.block.BlockPistonListener;
+import io.github.aleksandarharalanov.crates.listener.block.BlockPlaceListener;
 import io.github.aleksandarharalanov.crates.listener.entity.EntityExplodeListener;
 import io.github.aleksandarharalanov.crates.listener.player.PlayerInteractListener;
-import io.github.aleksandarharalanov.crates.listener.player.PlayerJoinListener;
 import io.github.aleksandarharalanov.crates.sqlite.SqliteDatabase;
 import io.github.aleksandarharalanov.crates.util.config.ConfigUtil;
 import io.github.aleksandarharalanov.crates.util.log.UpdateUtil;
 import net.minecraft.server.Block;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginManager;
@@ -62,15 +65,15 @@ public class Crates extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         final BlockBreakListener bbl = new BlockBreakListener();
         final BlockPistonListener bpl = new BlockPistonListener();
+        final BlockPlaceListener bpl2 = new BlockPlaceListener();
         final EntityExplodeListener eel = new EntityExplodeListener();
         final PlayerInteractListener pil = new PlayerInteractListener();
-        final PlayerJoinListener pjl = new PlayerJoinListener();
         pm.registerEvent(Type.BLOCK_BREAK, bbl, Priority.Lowest, this);
         pm.registerEvent(Type.BLOCK_PISTON_EXTEND, bpl, Priority.Lowest, this);
         pm.registerEvent(Type.BLOCK_PISTON_RETRACT, bpl, Priority.Lowest, this);
+        pm.registerEvent(Type.BLOCK_PLACE, bpl2, Priority.Lowest, this);
         pm.registerEvent(Type.ENTITY_EXPLODE, eel, Priority.Lowest, this);
         pm.registerEvent(Type.PLAYER_INTERACT, pil, Priority.Lowest, this);
-        pm.registerEvent(Type.PLAYER_JOIN, pjl, Priority.Lowest, this);
 
         final CratesCommand command = new CratesCommand(this);
         getCommand("crates").setExecutor(command);
@@ -94,6 +97,11 @@ public class Crates extends JavaPlugin {
 
         LogUtil.logConsoleInfo(String.format("[%s] v%s Disabled.",
                 getDescription().getName(), getDescription().getVersion()));
+    }
+
+    public static boolean checkWorldGuard(Player player, org.bukkit.block.Block block) {
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        return wg != null && wg.isEnabled() && !wg.canBuild(player, block.getLocation());
     }
 
     public static Crates getInstance() { return plugin; }

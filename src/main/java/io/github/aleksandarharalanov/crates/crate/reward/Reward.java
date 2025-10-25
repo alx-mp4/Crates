@@ -12,12 +12,12 @@ public final class Reward {
     public final int weight;
     public final RewardTier tier;
 
-    Reward(Material m, byte d, int a, int w, RewardTier t) {
-        itemStack = new ItemStack(m, a, (short) 0, d);
-        material = m;
-        data = d;
-        amount = a;
-        weight = w;
-        tier = t;
+    public Reward(Material material, byte data, int amount, int weight, RewardTier tier) {
+        this.itemStack = new ItemStack(material, amount, (short) 0, data);
+        this.material = material;
+        this.data = data;
+        this.amount = amount;
+        this.weight = weight;
+        this.tier = tier;
     }
 }

@@ -25,7 +25,6 @@ public final class SetKeysCommand implements CommandExecutor {
             return true;
         }
 
-        final String target = args[1].toLowerCase();
         int value;
         try {
             value = Integer.parseInt(args[2]);
@@ -34,24 +33,22 @@ public final class SetKeysCommand implements CommandExecutor {
             sender.sendMessage(ColorUtil.translateColorCodes("&7» Value must be 0 or higher."));
             return true;
         }
-        final int newKeys = value;
+        int setKeys = value;
 
+        Player player = Bukkit.getServer().getPlayer(args[1]);
         Crates.getIo().submit(() -> {
             try {
-                final Player player = Bukkit.getServer().getPlayer(target);
-                final int currentKeys = Crates.getSqliteDb().getPlayerKeys(target);
-                Crates.getSqliteDb().setPlayerKeys(target, newKeys);
+                int getKeys = Crates.getSqliteDb().getPlayerKeys(player);
+                Crates.getSqliteDb().setPlayerKeys(player, setKeys);
                 sender.sendMessage(ColorUtil.translateColorCodes(String.format(
-                                    "&7» Set &5%s&7's keys to &5%d&7.", player.getName(), newKeys)));
+                                    "&7» Set &5%s&7's keys to &5%d&7.", player.getName(), setKeys)));
                 player.sendMessage(ColorUtil.translateColorCodes(String.format(
-                        "&7» Your keys were set from &5%d &7to &5%d&7.", currentKeys, newKeys
+                        "&7» Your keys were set from &5%d &7to &5%d&7.", getKeys, setKeys
                 )));
                 player.playEffect(player.getLocation(), Effect.CLICK1, 0);
             } catch (SQLException e) {
-                sender.sendMessage(ColorUtil.translateColorCodes(
-                        "&4» Database error while setting keys. Contact an operator."));
-                LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys: %s", e));
-                return;
+                sender.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
+                LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys for %s: %s", player.getName(), e));
             }
         });
         return true;

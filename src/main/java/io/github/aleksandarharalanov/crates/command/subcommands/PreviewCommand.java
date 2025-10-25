@@ -1,7 +1,7 @@
 package io.github.aleksandarharalanov.crates.command.subcommands;
 
 import io.github.aleksandarharalanov.crates.Crates;
-import io.github.aleksandarharalanov.crates.ui.PreviewNmsMenu;
+import io.github.aleksandarharalanov.crates.ui.CratePreviewMenu;
 import io.github.aleksandarharalanov.crates.util.auth.AccessUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +25,7 @@ public final class PreviewCommand implements CommandExecutor {
 
         if (AccessUtil.denyIfNotPlayer(sender, plugin)) return true;
 
-        PreviewNmsMenu.open((Player) sender);
+        CratePreviewMenu.openPreview((Player) sender);
         return true;
     }
 }

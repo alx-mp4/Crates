@@ -1,4 +1,4 @@
-package io.github.aleksandarharalanov.crates.embed;
+package io.github.aleksandarharalanov.crates.webhook;
 
 import io.github.aleksandarharalanov.crates.Crates;
 

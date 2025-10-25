@@ -1,14 +1,18 @@
 package io.github.aleksandarharalanov.crates.crate;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import io.github.aleksandarharalanov.crates.Crates;
-import io.github.aleksandarharalanov.crates.api.event.CrateOpenEvent;
-import io.github.aleksandarharalanov.crates.crate.reward.RewardManager;
+import io.github.aleksandarharalanov.crates.api.event.CrateOpenEndEvent;
+import io.github.aleksandarharalanov.crates.api.event.CrateOpenStartEvent;
+import io.github.aleksandarharalanov.crates.crate.reward.Reward;
+import io.github.aleksandarharalanov.crates.crate.reward.RewardHandler;
+import io.github.aleksandarharalanov.crates.crate.reward.RewardTier;
 import io.github.aleksandarharalanov.crates.util.auth.AccessUtil;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 import io.github.aleksandarharalanov.crates.util.misc.ColorUtil;
+import io.github.aleksandarharalanov.crates.util.misc.EffectUtil;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet18ArmAnimation;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -22,34 +26,26 @@ public final class CrateHandler {
 
     private CrateHandler() { }
 
-    public static void openCrate(Player player, Block crate) {
-        if (CrateManager.isLocked(crate) || CrateManager.isOpened(crate)) {
+    public static void crateStart(Player player, Block crate) {
+        if (CrateManager.isBusy(crate)) {
             player.sendMessage(ColorUtil.translateColorCodes("&7» This crate is already being opened!"));
             return;
         }
 
-        CrateManager.lock(crate);
-
-        WorldGuardPlugin wg = (WorldGuardPlugin) getServer().getPluginManager().getPlugin("WorldGuard");
-        if (wg != null && wg.isEnabled() && !wg.canBuild(player, crate.getLocation())) {
+        if (Crates.checkWorldGuard(player, crate)) {
             player.sendMessage(ColorUtil.translateColorCodes("&c» You can't open crates protected by a region."));
-            CrateManager.unlock(crate);
             return;
         }
 
         if (!AccessUtil.senderHasPermission(player, "crates.open")) {
             player.sendMessage(ColorUtil.translateColorCodes("&c» You don't have permission to open crates."));
-            CrateManager.unlock(crate);
+            CrateManager.remove(crate);
             return;
         }
 
         // --- Dev API start
-        CrateOpenEvent event = new CrateOpenEvent(crate, player);
+        CrateOpenStartEvent event = new CrateOpenStartEvent(crate, player);
         getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
-            CrateManager.unlock(crate);
-            return;
-        }
         // --- Dev API end
 
         Crates.getIo().submit(() -> {
@@ -57,42 +53,63 @@ public final class CrateHandler {
                 int keys = Crates.getSqliteDb().getPlayerKeys(player);
                 if (keys <= 0) {
                     player.sendMessage(ColorUtil.translateColorCodes("&7» You don't have any keys."));
-                    CrateManager.unlock(crate);
+                    CrateManager.remove(crate);
                     return;
                 }
 
                 try {
                     Crates.getSqliteDb().setPlayerKeys(player, keys - 1);
                 } catch (SQLException e) {
-                    player.sendMessage(ColorUtil.translateColorCodes(
-                            "&4» Database error while setting keys. Contact an operator."));
-                    LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys: %s", e));
+                    player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
+                    LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys for %s: %s", player.getName(), e));
                     return;
                 }
 
-                CrateManager.markOpened(crate);
+                try {
+                    if (keys - 1 == 0) Crates.getSqliteDb().deletePlayer(player);
+                } catch (SQLException e) {
+                    player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
+                    LogUtil.logConsoleSevere(String.format("[Crates] Database error while deleting player %s: %s", player.getName(), e));
+                    return;
+                }
 
-                player.sendMessage(ColorUtil.translateColorCodes("&5» Crate is being opened."));
+                CrateManager.add(crate);
 
-                EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-                nmsPlayer.netServerHandler.sendPacket(new Packet18ArmAnimation(nmsPlayer, 1));
+                player.sendMessage(ColorUtil.translateColorCodes("&5» Opening crate..."));
+
+                EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
+                playerHandle.netServerHandler.sendPacket(new Packet18ArmAnimation(playerHandle, 1));
 
                 player.playEffect(crate.getLocation(), Effect.DOOR_TOGGLE, 0);
-                player.playEffect(crate.getLocation(), Effect.STEP_SOUND, 95);
+                player.playEffect(crate.getLocation(), Effect.STEP_SOUND, 33);
 
                 getServer().getScheduler().scheduleSyncDelayedTask(
                         Crates.getInstance(),
-                        () -> {
-                            RewardManager.giveReward(player, crate);
-                            CrateManager.clear(crate);
-                        },
-                        CrateConfig.getCrateOpenDelay()
-                );
+                        () -> RewardHandler.giveReward(player, crate), CrateConfig.getCrateOpenDelay());
             } catch (SQLException e) {
-                player.sendMessage(ColorUtil.translateColorCodes("&4» Database error while opening crate. Contact an operator."));
-                LogUtil.logConsoleWarning(String.format("[Crates] Database error while opening crate: %s", e));
-                CrateManager.unlock(crate);
+                player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
+                LogUtil.logConsoleWarning(String.format("[Crates] Database error while opening crate for %s: %s", player.getName(), e));
+                CrateManager.remove(crate);
             }
         });
+    }
+
+    public static void crateEnd(Block crate, Player player, Reward reward) {
+        crate.setTypeId(0);
+        EffectUtil.playBlockBreakEffect(player, crate.getLocation(), 35, reward.tier.getParticleColor());
+        crate.getWorld().dropItem(crate.getLocation(), reward.itemStack);
+        player.sendMessage(ColorUtil.translateColorCodes(String.format(
+                "&7» The crate contained &f%d× %s &8[%s&8]&7!", reward.amount, reward.material.name(), reward.tier.getDisplayName())));
+        if (reward.tier == RewardTier.EPIC || reward.tier == RewardTier.LEGENDARY) {
+            Bukkit.getServer().broadcastMessage(ColorUtil.translateColorCodes(String.format(
+                    "&7» &5%s&7 got &f%d× %s &8[%s&8]&7 from a crate!",
+                    player.getName(), reward.amount, reward.material.name(), reward.tier.getDisplayName())));
+        }
+        CrateManager.remove(crate);
+
+        // --- Dev API start
+        CrateOpenEndEvent event = new CrateOpenEndEvent(crate, player, reward);
+        getServer().getPluginManager().callEvent(event);
+        // --- Dev API end
     }
 }

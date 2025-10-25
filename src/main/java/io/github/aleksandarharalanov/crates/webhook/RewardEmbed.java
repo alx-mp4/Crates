@@ -1,4 +1,4 @@
-package io.github.aleksandarharalanov.crates.embed;
+package io.github.aleksandarharalanov.crates.webhook;
 
 import io.github.aleksandarharalanov.crates.crate.reward.Reward;
 import org.bukkit.entity.Player;
@@ -26,6 +26,6 @@ public final class RewardEmbed extends DiscordEmbed {
                 .setThumbnail(icon)
                 .addField("Reward:", String.format("%s× %s", reward.amount, reward.material), true)
                 .addField("Rarity:", reward.tier.toString(), true)
-                .setColor(Color.decode(reward.tier.getRgbColor()));
+                .setColor(Color.decode(reward.tier.getEmbedColor()));
     }
 }
