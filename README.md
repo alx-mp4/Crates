@@ -49,12 +49,12 @@ For extra assurance, you can verify the `.jar` file using [VirusTotal](https://w
 ---
 
 ## 🔗 Requirements
-Compatible with:
+Confirmed compatability with the server software listed down below:
 - [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar)
 - [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
-### Soft Depend
+#### Soft Depend
 | Plugin     | Description                                         |
 |------------|-----------------------------------------------------|
 | WorldGuard | Safeguard against block duplication within regions. |
