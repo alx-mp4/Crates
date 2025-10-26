@@ -18,6 +18,7 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet18ArmAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -107,7 +108,8 @@ public final class CrateHandler {
     public static void crateEnd(Block crate, Player player, Reward reward) {
         crate.setTypeId(0);
         EffectUtil.playBlockBreakEffect(player, crate.getLocation(), 35, reward.tier.getParticleColor());
-        crate.getWorld().dropItem(crate.getLocation(), reward.itemStack);
+        Location base = crate.getLocation().add(0.5, 0.5, 0.5);
+        crate.getWorld().dropItem(base, reward.itemStack);
         player.sendMessage(ColorUtil.translateColorCodes(String.format(
                 "&7» The crate contained &f%d× %s &8[%s&8]&7!", reward.amount, reward.material.name(), reward.tier.getDisplayName())));
         if (reward.tier == RewardTier.EPIC || reward.tier == RewardTier.LEGENDARY) {
