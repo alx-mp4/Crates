@@ -20,7 +20,7 @@ public final class RewardEmbed extends DiscordEmbed {
     protected void setupEmbedDetails() {
         final int id = reward.material.getId();
         final byte data = reward.data;
-        final String icon = String.format("https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/src/main/resources/items/%d_%d.webp", id, data);
+        final String icon = String.format("https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/assets/items/%d_%d.webp", id, data);
 
         embed.setTitle("Unboxed Crate")
                 .setThumbnail(icon)
