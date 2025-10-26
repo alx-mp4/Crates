@@ -55,9 +55,9 @@ Compatible with:
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
 ### Soft Depend
-| Plugin     | Description                                                                                  |
-|------------|----------------------------------------------------------------------------------------------|
-| WorldGuard | Safeguard against block duplication within regions. No additional configuration is required. |
+| Plugin     | Description                                         |
+|------------|-----------------------------------------------------|
+| WorldGuard | Safeguard against block duplication within regions. |
 
 > [!NOTE]
 > Soft depend plugins are not required for **Crates** to function. However, if they are present, **Crates** will integrate with them to ensure proper functionality.
