@@ -50,8 +50,8 @@ For extra assurance, you can verify the `.jar` file using [VirusTotal](https://w
 ---
 
 ## 🔗 Requirements
-Confirmed compatability with the server software listed down below:
-- [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar)
+**Crates** is built against [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar). It is expected to work on the server software listed below (forks of CB1060), assuming their current stable releases have not modified the APIs or behaviors used for the plugin.
+
 - [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
