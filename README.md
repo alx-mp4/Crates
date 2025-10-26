@@ -36,7 +36,7 @@ Configurable weighted rewards, rarity tiers, and Discord integration.
 
 ## 🤝 Contributing
 Contributions, issues, and suggestions are welcome.  
-Refer to [CONTRIBUTING](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) before submitting changes.
+Refer to [CONTRIBUTING](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) before opening pull requests.
 
 To report bugs or request features, use the [GitHub Issues page](https://github.com/AleksandarHaralanov/Crates/issues).
 
