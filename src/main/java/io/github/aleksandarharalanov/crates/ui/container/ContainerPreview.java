@@ -19,14 +19,14 @@ public final class ContainerPreview extends ContainerChest {
     private int page = 0;
 
     // Layout
-    private static final int PAGE_CAPACITY = 45; // 5 rows for rewards (0..44)
-    private static final int CONTROL_FROM = 45;  // bottom row (45..53)
+    private static final int PAGE_CAPACITY = 45; // 5 Rows for rewards (0..44)
+    private static final int CONTROL_FROM = 45;  // Bottom row (45..53)
     private static final int CONTROL_TO = 54;
 
     // Controls
-    private static final int SLOT_INFO = 49;     // center
-    private static final int SLOT_PREV = 45;     // bottom-left
-    private static final int SLOT_NEXT = 53;     // bottom-right
+    private static final int SLOT_INFO = 49;     // Center
+    private static final int SLOT_PREV = 45;     // Bottom-left
+    private static final int SLOT_NEXT = 53;     // Bottom-right
 
     public ContainerPreview(EntityPlayer viewer,
                             IInventory playerInv,
@@ -66,7 +66,7 @@ public final class ContainerPreview extends ContainerChest {
         setSlot(SLOT_INFO, 339, page + 1, 0);
         setSlot(SLOT_PREV, hasPrev ? 35 : 36, 1, hasPrev ? 14 : 0);
         setSlot(SLOT_NEXT, hasNext ? 35 : 36, 1, hasNext ? 13 : 0);
-        for (int fill : new int[] {46, 47, 48, 50, 51, 52}) setSlot(fill, 36, 1, 0);
+        for (int fill : new int[] { 46, 47, 48, 50, 51, 52 }) setSlot(fill, 36, 1, 0);
 
     }
 
