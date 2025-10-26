@@ -29,8 +29,6 @@ tasks.shadowJar {
     mergeServiceFiles()
 }
 
-tasks.processResources { exclude('items/**') }
-
 tasks.build { dependsOn tasks.shadowJar }
 
 tasks.register('cleanShadowJar') {
