@@ -23,6 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.bukkit.Bukkit.getServer;
