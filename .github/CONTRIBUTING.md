@@ -17,7 +17,7 @@ When reading the code, you'll quickly get the hang of it. Focus on optimizing fo
 
 - Do not leave zombie code behind.
 - Clean and concise comments are encouraged if they improve understanding.
-- We use tabulators as indentations.
+- We use tabs for indentations.
 - Follow object-oriented principles such as SOLID to improve code maintainability.
 - Prefer Java Streams and functional programming when applicable, as they improve code readability and performance.
 - Use proper Java keywords and modifiers to ensure encapsulation and best practices:
