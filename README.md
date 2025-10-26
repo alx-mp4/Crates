@@ -54,7 +54,9 @@ Compatible with:
 - [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
-**Softdepend:** WorldGuard
+**Soft Depend:** WorldGuard
+> [!NOTE]
+> **WorldGuard** is used here only as a safeguard against block duplication within regions. No additional configuration is required.
 
 ---
 
