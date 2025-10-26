@@ -36,7 +36,7 @@ Configurable weighted rewards, rarity tiers, and Discord integration.
 
 ## 🤝 Contributing
 Contributions, issues, and suggestions are welcome.  
-Refer to the [CONTRIBUTING guide](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) before submitting changes.
+Refer to [CONTRIBUTING](https://github.com/AleksandarHaralanov/Crates/blob/master/.github/CONTRIBUTING.md) before opening pull requests.
 
 To report bugs or request features, use the [GitHub Issues page](https://github.com/AleksandarHaralanov/Crates/issues).
 
@@ -49,12 +49,18 @@ For extra assurance, you can verify the `.jar` file using [VirusTotal](https://w
 ---
 
 ## 🔗 Requirements
-Compatible with:
+Confirmed compatability with the server software listed down below:
 - [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar)
 - [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
 
-**Softdepend:** WorldGuard
+#### Soft Depend
+| Plugin     | Description                                         |
+|------------|-----------------------------------------------------|
+| WorldGuard | Safeguard against block duplication within regions. |
+
+> [!NOTE]
+> Soft depend plugins are not required for **Crates** to function. However, if they are present, **Crates** will integrate with them to ensure proper functionality.
 
 ---
 
