@@ -3,6 +3,7 @@
 **Lightweight crate unboxing system for Minecraft Beta 1.7.3**<br/>
 Configurable weighted rewards, rarity tiers, and Discord integration.
 
+![Software](https://img.shields.io/badge/build-craftbukkit1060-purple)
 ![Version](https://img.shields.io/github/v/release/AleksandarHaralanov/Crates?display_name=tag&sort=semver)
 ![Downloads](https://img.shields.io/github/downloads/AleksandarHaralanov/Crates/total?color=green)
 ![License](https://img.shields.io/github/license/AleksandarHaralanov/Crates)
