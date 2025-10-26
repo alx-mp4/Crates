@@ -3,17 +3,12 @@ package io.github.aleksandarharalanov.crates.crate.reward;
 import io.github.aleksandarharalanov.crates.Crates;
 import io.github.aleksandarharalanov.crates.api.event.CrateRewardChosenEvent;
 import io.github.aleksandarharalanov.crates.crate.CrateConfig;
-import io.github.aleksandarharalanov.crates.webhook.DiscordConfig;
-import io.github.aleksandarharalanov.crates.webhook.DiscordEmbed;
-import io.github.aleksandarharalanov.crates.webhook.RewardEmbed;
 import io.github.aleksandarharalanov.crates.ui.CrateRouletteMenu;
-import io.github.aleksandarharalanov.crates.util.log.DiscordUtil;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 import io.github.aleksandarharalanov.crates.util.misc.ColorUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -69,20 +64,6 @@ public final class RewardHandler {
         }
 
         CrateRouletteMenu.playAnimation(player, crate, CrateConfig.getRewards(), chosenReward);
-
-        if (!DiscordConfig.getEnabled()) return;
-        final String webhookUrl = DiscordConfig.getWebhookUrl();
-        DiscordUtil webhook = new DiscordUtil(webhookUrl);
-        DiscordEmbed embed = new RewardEmbed(Crates.getInstance(), player, chosenReward.reward);
-        webhook.addEmbed(embed.getEmbed());
-
-        getServer().getScheduler().scheduleAsyncDelayedTask(Crates.getInstance(), () -> {
-            try {
-                webhook.execute();
-            } catch (IOException e) {
-                LogUtil.logConsoleWarning(String.format("[Crates] An exception occurred when executing the Discord webhook: %s", e));
-            }
-        }, 20L);
     }
 
     private static ChosenReward getRandomReward(Block crate, Player player) {

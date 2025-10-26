@@ -7,9 +7,13 @@ import io.github.aleksandarharalanov.crates.crate.reward.Reward;
 import io.github.aleksandarharalanov.crates.crate.reward.RewardHandler;
 import io.github.aleksandarharalanov.crates.crate.reward.RewardTier;
 import io.github.aleksandarharalanov.crates.util.auth.AccessUtil;
+import io.github.aleksandarharalanov.crates.util.log.DiscordUtil;
 import io.github.aleksandarharalanov.crates.util.log.LogUtil;
 import io.github.aleksandarharalanov.crates.util.misc.ColorUtil;
 import io.github.aleksandarharalanov.crates.util.misc.EffectUtil;
+import io.github.aleksandarharalanov.crates.webhook.DiscordConfig;
+import io.github.aleksandarharalanov.crates.webhook.DiscordEmbed;
+import io.github.aleksandarharalanov.crates.webhook.RewardEmbed;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet18ArmAnimation;
 import org.bukkit.Bukkit;
@@ -114,6 +118,20 @@ public final class CrateHandler {
 
         CrateManager.remove(player);
         CrateManager.remove(crate);
+
+        if (!DiscordConfig.getEnabled()) return;
+        final String webhookUrl = DiscordConfig.getWebhookUrl();
+        DiscordUtil webhook = new DiscordUtil(webhookUrl);
+        DiscordEmbed embed = new RewardEmbed(Crates.getInstance(), player, reward);
+        webhook.addEmbed(embed.getEmbed());
+
+        getServer().getScheduler().scheduleAsyncDelayedTask(Crates.getInstance(), () -> {
+            try {
+                webhook.execute();
+            } catch (IOException e) {
+                LogUtil.logConsoleWarning(String.format("[Crates] An exception occurred when executing the Discord webhook: %s", e));
+            }
+        }, 20L);
 
         // --- Dev API start
         CrateOpenEndEvent event = new CrateOpenEndEvent(crate, player, reward);
