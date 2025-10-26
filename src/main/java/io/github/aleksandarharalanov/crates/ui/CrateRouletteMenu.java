@@ -74,7 +74,7 @@ public final class CrateRouletteMenu {
         step[0] = () -> {
             if (stepCount[0] == totalCycles) {
                 cr.render(finalOffset);
-                crate.getWorld().playEffect(crate.getLocation(), Effect.CLICK1, 0);
+                player.playEffect(crate.getLocation(), Effect.CLICK1, 0);
 
                 player.getServer().getScheduler().scheduleSyncDelayedTask(Crates.getInstance(), () -> {
                     handle.netServerHandler.sendPacket(new Packet101CloseWindow(handle.activeContainer.windowId));
@@ -84,7 +84,7 @@ public final class CrateRouletteMenu {
                     CrateHandler.crateEnd(crate, player, reward);
 
                     Location base = crate.getLocation().add(0.5, 0.5, 0.5);
-                    for (int i = 0; i < 20; i++) base.getWorld().playEffect(base, org.bukkit.Effect.SMOKE, 4);
+                    for (int i = 0; i < 20; i++) base.getWorld().playEffect(base, Effect.SMOKE, 4);
                 }, 30L);
                 return;
             }

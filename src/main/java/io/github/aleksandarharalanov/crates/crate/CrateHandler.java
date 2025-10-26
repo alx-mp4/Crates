@@ -92,8 +92,8 @@ public final class CrateHandler {
                 EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
                 playerHandle.netServerHandler.sendPacket(new Packet18ArmAnimation(playerHandle, 1));
 
-                player.playEffect(crate.getLocation(), Effect.DOOR_TOGGLE, 0);
-                player.playEffect(crate.getLocation(), Effect.STEP_SOUND, 33);
+                crate.getWorld().playEffect(crate.getLocation(), Effect.DOOR_TOGGLE, 0);
+                crate.getWorld().playEffect(crate.getLocation(), Effect.STEP_SOUND, 33);
 
                 getServer().getScheduler().scheduleSyncDelayedTask(
                         Crates.getInstance(),
