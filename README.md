@@ -1,6 +1,6 @@
 <h1><img align="top" width="40" src="assets/Crates.png" alt="Crates"/> Crates</h1>
 
-Lightweight crate unboxing system for Minecraft Beta 1.7.3<br/>
+**Lightweight crate unboxing system for Minecraft Beta 1.7.3**<br/>
 Configurable weighted rewards, rarity tiers, and Discord integration.
 
 ![Version](https://img.shields.io/github/v/release/AleksandarHaralanov/Crates?display_name=tag&sort=semver)
