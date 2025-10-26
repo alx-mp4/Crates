@@ -32,6 +32,11 @@ public final class CrateHandler {
             return;
         }
 
+        if (CrateManager.isBusy(player)) {
+            player.sendMessage(ColorUtil.translateColorCodes("&7» You are already opening another crate!"));
+            return;
+        }
+
         if (Crates.checkWorldGuard(player, crate)) {
             player.sendMessage(ColorUtil.translateColorCodes("&c» You can't open crates protected by a region."));
             return;
@@ -73,6 +78,7 @@ public final class CrateHandler {
                     return;
                 }
 
+                CrateManager.add(player);
                 CrateManager.add(crate);
 
                 player.sendMessage(ColorUtil.translateColorCodes("&5» Opening crate..."));
@@ -105,6 +111,8 @@ public final class CrateHandler {
                     "&7» &5%s&7 got &f%d× %s &8[%s&8]&7 from a crate!",
                     player.getName(), reward.amount, reward.material.name(), reward.tier.getDisplayName())));
         }
+
+        CrateManager.remove(player);
         CrateManager.remove(crate);
 
         // --- Dev API start
