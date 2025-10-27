@@ -3,6 +3,7 @@ package io.github.aleksandarharalanov.crates.listener.block;
 import io.github.aleksandarharalanov.crates.Crates;
 import io.github.aleksandarharalanov.crates.crate.CrateConfig;
 import io.github.aleksandarharalanov.crates.crate.CrateManager;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -25,7 +26,8 @@ public class BlockBreakListener extends BlockListener {
 
             event.setCancelled(true);
             block.setTypeId(0);
-            block.getWorld().dropItem(block.getLocation(), new ItemStack(95, 1));
+            Location base = block.getLocation().add(0.5, 0.5, 0.5);
+            block.getWorld().dropItem(base, new ItemStack(95, 1));
         }
     }
 }
