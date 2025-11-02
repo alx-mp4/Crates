@@ -26,13 +26,12 @@ import org.bukkit.entity.Player;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static org.bukkit.Bukkit.getServer;
-
 public final class CrateHandler {
 
     private CrateHandler() { }
 
     public static void crateStart(Player player, Block crate) {
+        // --- Early guards
         if (CrateManager.isBusy(crate)) {
             player.sendMessage(ColorUtil.translateColorCodes("&7» This crate is already being opened!"));
             return;
@@ -50,95 +49,117 @@ public final class CrateHandler {
 
         if (!AccessUtil.senderHasPermission(player, "crates.open")) {
             player.sendMessage(ColorUtil.translateColorCodes("&c» You don't have permission to open crates."));
-            CrateManager.remove(crate);
             return;
         }
 
         // --- Dev API start
         CrateOpenStartEvent event = new CrateOpenStartEvent(crate, player);
-        getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         // --- Dev API end
 
+        // --- Ensure player has keys and set values
         Crates.getIo().submit(() -> {
+            final int keys;
+
             try {
-                int keys = Crates.getSqliteDb().getPlayerKeys(player);
-                if (keys <= 0) {
+                keys = Crates.getSqliteDb().getPlayerKeys(player);
+                if (keys > 0) Crates.getSqliteDb().setPlayerKeys(player, keys - 1);
+                else {
                     player.sendMessage(ColorUtil.translateColorCodes("&7» You don't have any keys."));
-                    CrateManager.remove(crate);
                     return;
                 }
-
-                try {
-                    Crates.getSqliteDb().setPlayerKeys(player, keys - 1);
-                } catch (SQLException e) {
-                    player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
-                    LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys for %s: %s", player.getName(), e));
-                    return;
-                }
-
-                try {
-                    if (keys - 1 == 0) Crates.getSqliteDb().deletePlayer(player);
-                } catch (SQLException e) {
-                    player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
-                    LogUtil.logConsoleSevere(String.format("[Crates] Database error while deleting player %s: %s", player.getName(), e));
-                    return;
-                }
-
-                CrateManager.add(player);
-                CrateManager.add(crate);
-
-                player.sendMessage(ColorUtil.translateColorCodes("&5» Opening crate..."));
-
-                EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
-                playerHandle.netServerHandler.sendPacket(new Packet18ArmAnimation(playerHandle, 1));
-
-                crate.getWorld().playEffect(crate.getLocation(), Effect.DOOR_TOGGLE, 0);
-                crate.getWorld().playEffect(crate.getLocation(), Effect.STEP_SOUND, 33);
-
-                getServer().getScheduler().scheduleSyncDelayedTask(
-                        Crates.getInstance(),
-                        () -> RewardHandler.giveReward(player, crate), CrateConfig.getCrateOpenDelay());
             } catch (SQLException e) {
                 player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
-                LogUtil.logConsoleWarning(String.format("[Crates] Database error while opening crate for %s: %s", player.getName(), e));
-                CrateManager.remove(crate);
+                LogUtil.logConsoleSevere(String.format("[Crates] Database error while setting keys for %s: %s", player.getName(), e));
+                return;
             }
+
+            // --- Switch to main thread
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Crates.getInstance(), () -> {
+                        // Mark busy player and specific crate as busy
+                        CrateManager.add(player);
+                        CrateManager.add(crate);
+
+                        // Feedback to player
+                        player.sendMessage(ColorUtil.translateColorCodes("&7» Opening crate..."));
+
+                        // Visuals + sounds
+                        EntityPlayer playerHandle = ((CraftPlayer) player).getHandle();
+                        playerHandle.netServerHandler.sendPacket(new Packet18ArmAnimation(playerHandle, 1));
+
+                        crate.getWorld().playEffect(crate.getLocation(), Effect.DOOR_TOGGLE, 0);
+                        crate.getWorld().playEffect(crate.getLocation(), Effect.STEP_SOUND, 33);
+
+                        // Schedule reward process
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(
+                                Crates.getInstance(),
+                                () -> RewardHandler.giveReward(player, crate),
+                                CrateConfig.getCrateOpenDelay()
+                        );
+                    },
+                    0L
+            );
         });
     }
 
     public static void crateEnd(Block crate, Player player, Reward reward) {
+        // --- Visuals, sounds, and reward
         crate.setTypeId(0);
         EffectUtil.playBlockBreakEffect(player, crate.getLocation(), 35, reward.tier.getParticleColor());
+
         Location base = crate.getLocation().add(0.5, 0.5, 0.5);
         crate.getWorld().dropItem(base, reward.itemStack);
-        player.sendMessage(ColorUtil.translateColorCodes(String.format(
-                "&7» The crate contained &f%d× %s &8[%s&8]&7!", reward.amount, reward.material.name(), reward.tier.getDisplayName())));
+
+        // --- Player & server messages
+        String rewardName = reward.material.name();
+        String tierName = reward.tier.getDisplayName();
+        int amount = reward.amount;
+
+        player.sendMessage(ColorUtil.translateColorCodes(
+                String.format("&7» The crate contained &f%d× %s &8[%s&8]&7!", amount, rewardName, tierName)));
+
         if (reward.tier == RewardTier.EPIC || reward.tier == RewardTier.LEGENDARY) {
-            Bukkit.getServer().broadcastMessage(ColorUtil.translateColorCodes(String.format(
-                    "&7» &5%s&7 got &f%d× %s &8[%s&8]&7 from a crate!",
-                    player.getName(), reward.amount, reward.material.name(), reward.tier.getDisplayName())));
+            Bukkit.getServer().broadcastMessage(ColorUtil.translateColorCodes(
+                    String.format("&7» &5%s&7 got &f%d× %s &8[%s&8]&7 from a crate!", player.getName(), amount, rewardName, tierName)));
         }
 
+        // --- Increment crates opened counter for player
+        Crates.getIo().submit(() -> {
+            try {
+                final int cratesOpened = Crates.getSqliteDb().getCratesOpened(player);
+                Crates.getSqliteDb().setCratesOpened(player, cratesOpened + 1);
+            } catch (SQLException e) {
+                player.sendMessage(ColorUtil.translateColorCodes("&4» Database error. Contact an operator."));
+                LogUtil.logConsoleWarning(String.format("[Crates] Database error incrementing crates opened for %s: %s", player.getName(), e));
+            }
+        });
+
+        // --- Cleanup runtime state
         CrateManager.remove(player);
         CrateManager.remove(crate);
 
-        if (!DiscordConfig.getEnabled()) return;
-        final String webhookUrl = DiscordConfig.getWebhookUrl();
-        DiscordUtil webhook = new DiscordUtil(webhookUrl);
-        DiscordEmbed embed = new RewardEmbed(Crates.getInstance(), player, reward);
-        webhook.addEmbed(embed.getEmbed());
+        // --- Discord webhook
+        if (DiscordConfig.getEnabled()) {
+            final DiscordUtil webhook = new DiscordUtil(DiscordConfig.getWebhookUrl());
+            final DiscordEmbed embed = new RewardEmbed(Crates.getInstance(), player, reward);
+            webhook.addEmbed(embed.getEmbed());
 
-        getServer().getScheduler().scheduleAsyncDelayedTask(Crates.getInstance(), () -> {
-            try {
-                webhook.execute();
-            } catch (IOException e) {
-                LogUtil.logConsoleWarning(String.format("[Crates] An exception occurred when executing the Discord webhook: %s", e));
-            }
-        }, 20L);
+            Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(
+                    Crates.getInstance(),
+                    () -> {
+                        try {
+                            webhook.execute();
+                        } catch (IOException e) {
+                            LogUtil.logConsoleWarning(String.format("[Crates] An exception occurred when executing the Discord webhook: %s", e));
+                        }
+                    },
+                    0L
+            );
+        }
 
         // --- Dev API start
         CrateOpenEndEvent event = new CrateOpenEndEvent(crate, player, reward);
-        getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         // --- Dev API end
     }
 }
