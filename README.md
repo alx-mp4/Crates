@@ -102,7 +102,7 @@ The plugin generates a configuration file in the **Crates** directory on first r
 It defines webhook settings, crate open behavior, and reward data.
 
 > [!TIP]
-> You can find all Minecraft b1.7.3 IDs in the image linked [here](https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/assets/Minecraft_b1.7.3_IDs.png).
+> You can find all Minecraft b1.7.3 IDs in the image linked [here](https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/assets/Minecraft%20b1.7.3%20IDs.png).
 
 ### `config.yml`
 ```yaml
