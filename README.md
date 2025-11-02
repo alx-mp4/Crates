@@ -101,6 +101,9 @@ Use a permissions plugin such as **PermissionsEx** to grant access to specific g
 The plugin generates a configuration file in the **Crates** directory on first run.  
 It defines webhook settings, crate open behavior, and reward data.
 
+> [!TIP]
+> You can find all Minecraft b1.7.3 IDs in the image linked [here](https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/assets/Minecraft_b1.7.3_IDs.png).
+
 ### `config.yml`
 ```yaml
 # ==========================================================
