@@ -4,9 +4,9 @@
 Configurable weighted rewards, rarity tiers, and Discord integration.
 
 ![Software](https://img.shields.io/badge/build-craftbukkit1060-purple)
-![Version](https://img.shields.io/github/v/release/AleksandarHaralanov/Crates?display_name=tag&sort=semver)
-![Downloads](https://img.shields.io/github/downloads/AleksandarHaralanov/Crates/total?color=green)
-![License](https://img.shields.io/github/license/AleksandarHaralanov/Crates)
+![Version](https://img.shields.io/github/v/release/alx-mp4/Crates?display_name=tag&sort=semver)
+![Downloads](https://img.shields.io/github/downloads/alx-mp4/Crates/total?color=green)
+![License](https://img.shields.io/github/license/alx-mp4/Crates)
 
 ---
 
@@ -37,20 +37,20 @@ Configurable weighted rewards, rarity tiers, and Discord integration.
 
 ## 🤝 Contributing
 Contributions, issues, and suggestions are welcome.  
-Refer to [CONTRIBUTING](https://github.com/AleksandarHaralanov/Crates?tab=contributing-ov-file) before opening pull requests.
+Refer to [CONTRIBUTING](https://github.com/alx-mp4/Crates?tab=contributing-ov-file) before opening pull requests.
 
-To report bugs or request features, use the [GitHub Issues page](https://github.com/AleksandarHaralanov/Crates/issues).
+To report bugs or request features, use the [GitHub Issues page](https://github.com/alx-mp4/Crates/issues).
 
 ---
 
 ## ⬇️ Download
-The latest release is available on the [Releases page](https://github.com/AleksandarHaralanov/Crates/releases/latest).  
+The latest release is available on the [Releases page](https://github.com/alx-mp4/Crates/releases/latest).  
 For extra assurance, you can verify the `.jar` file using [VirusTotal](https://www.virustotal.com/gui/home/upload).
 
 ---
 
 ## 🔗 Requirements
-**Crates** is built against [CraftBukkit 1060](https://github.com/AleksandarHaralanov/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar). It is expected to work on the server software listed below (forks of CB1060), assuming their current stable releases have not modified the APIs or behaviors used for the plugin.
+**Crates** is built against [CraftBukkit 1060](https://github.com/alx-mp4/Crates/raw/refs/heads/master/libs/craftbukkit-1060.jar). It is expected to work on the server software listed below (forks of CB1060), assuming their current stable releases have not modified the APIs or behaviors used for the plugin.
 
 - [Project Poseidon](https://github.com/retromcorg/Project-Poseidon)
 - [UberBukkit](https://github.com/Moresteck/Project-Poseidon-Uberbukkit)
@@ -102,7 +102,7 @@ The plugin generates a configuration file in the **Crates** directory on first r
 It defines webhook settings, crate open behavior, and reward data.
 
 > [!TIP]
-> You can find all Minecraft b1.7.3 IDs in the image linked [here](https://raw.githubusercontent.com/AleksandarHaralanov/Crates/refs/heads/master/assets/Minecraft%20b1.7.3%20IDs.png).
+> You can find all Minecraft b1.7.3 IDs in the image linked [here](https://raw.githubusercontent.com/alx-mp4/Crates/refs/heads/master/assets/Minecraft%20b1.7.3%20IDs.png).
 
 ### `config.yml`
 ```yaml
