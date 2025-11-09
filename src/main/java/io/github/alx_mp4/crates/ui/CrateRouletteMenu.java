@@ -25,7 +25,7 @@ public final class CrateRouletteMenu {
     private CrateRouletteMenu() {}
 
     private static final Random random = new SecureRandom();
-    private static final String TITLE = "Crate Roulette Spin";
+    private static final String TITLE = "              Spinning...";
     private static final int SIZE = 27;
 
     private static final int SPIN_CYCLES_MIN = 50;
