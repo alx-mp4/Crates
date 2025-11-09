@@ -1,9 +1,8 @@
-main: io.github.aleksandarharalanov.crates.Crates
-version: 2.1.0
+main: io.github.alx_mp4.crates.Crates
 version: 2.1.1
 name: Crates
 author: Beezle
-website: github.com/AleksandarHaralanov/Crates
+website: github.com/alx-mp4/Crates
 description: Implements crate unboxing for various rewards.
 softdepend: [WorldGuard]
 

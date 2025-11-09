@@ -1,11 +1,11 @@
-package io.github.aleksandarharalanov.crates.ui;
+package io.github.alx_mp4.crates.ui;
 
-import io.github.aleksandarharalanov.crates.Crates;
-import io.github.aleksandarharalanov.crates.crate.CrateConfig;
-import io.github.aleksandarharalanov.crates.crate.CrateHandler;
-import io.github.aleksandarharalanov.crates.crate.reward.Reward;
-import io.github.aleksandarharalanov.crates.crate.reward.RewardHandler;
-import io.github.aleksandarharalanov.crates.ui.container.ContainerRoulette;
+import io.github.alx_mp4.crates.Crates;
+import io.github.alx_mp4.crates.crate.CrateConfig;
+import io.github.alx_mp4.crates.crate.CrateHandler;
+import io.github.alx_mp4.crates.crate.reward.Reward;
+import io.github.alx_mp4.crates.crate.reward.RewardHandler;
+import io.github.alx_mp4.crates.ui.container.ContainerRoulette;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.IInventory;
